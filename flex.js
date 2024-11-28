@@ -1,9 +1,11 @@
 'use strict';
 
-const { defineService } = require('@streamyx/core');
 const { createApi } = require('./lib/api');
 
-module.exports = defineService(() => (core) => {
+/**
+ * @type {import("@streamyx/core").Service}
+ */
+module.exports = () => (core) => {
   const api = createApi(core);
 
   return {
@@ -33,16 +35,15 @@ module.exports = defineService(() => (core) => {
           for (const episode of season.series) {
             if (eps.items.size && !eps.has(episode.series, season.season_number)) continue;
             const source = await api.fetchPlaybackOptions(slug, episode.id);
-            
+
             results.push({
               id: episode.id,
               title: series.name,
               seasonNumber: season.season_number,
               episodeNumber: episode.series,
               episodeTitle: episode.label.trim(),
-              source: { url: source[0].src + `?uuid=${core.store.state.uuid}`, }
+              source: { url: source[0].src + `?uuid=${core.store.state.uuid}` },
             });
-
           }
         }
       } else {
@@ -51,4 +52,4 @@ module.exports = defineService(() => (core) => {
       return results;
     },
   };
-});
+};

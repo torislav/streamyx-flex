@@ -2,8 +2,11 @@
   "name": "streamyx-flex",
   "description": "Flex service for Streamyx",
   "version": "1.0.0",
-  "private": true,
   "main": "flex.js",
+  "files": [
+    "flex.js",
+    "lib"
+  ],
   "scripts": {
     "postpack": "tar2zip *.tgz",
     "test": "vitest"
@@ -11,11 +14,10 @@
   "keywords": [],
   "author": "torislav",
   "license": "ISC",
-  "dependencies": {
-    "@streamyx/core": "^2.1.1"
-  },
   "devDependencies": {
+    "@streamyx/core": "^2.1.1",
     "tar-to-zip": "^3.0.0",
+    "typescript": "^5.7.2",
     "vitest": "^2.1.1"
   }
 }
