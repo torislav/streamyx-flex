@@ -1,7 +1,7 @@
 {
   "name": "streamyx-flex",
   "description": "Flex service for Streamyx",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "flex.js",
   "files": [
     "flex.js",
