@@ -1,0 +1,55 @@
+stages:
+  - build
+  - release
+
+build_and_pack:
+  stage: build
+  image: node:22
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - node_modules/
+    policy: pull-push
+  script:
+    - npm ci
+    - npm pack
+  artifacts:
+    paths:
+      - '*.tgz'
+      - '*.zip'
+      - '*.stx'
+    expire_in: 1 week
+
+release_job:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/cli:latest
+  script:
+    - glab auth login --hostname gitlab.com --token "$GLAB_TOKEN" --api-protocol https
+    - |
+      set -e
+      assets_list=""
+      for f in *.tgz *.zip *.stx; do
+        if [ -f "$f" ]; then
+          assets_list="$assets_list $f"
+        fi
+      done
+      assets_list=$(echo $assets_list)
+      if [ -n "$assets_list" ]; then
+        old_ifs="$IFS"
+        IFS=' '
+        # shellcheck disable=SC2046
+        set -- $assets_list
+        IFS="$old_ifs"
+        glab release create "$CI_COMMIT_TAG" "$@" --name "$CI_COMMIT_TAG"
+      else
+        glab release create "$CI_COMMIT_TAG" --name "$CI_COMMIT_TAG"
+      fi
+  needs:
+    - job: build_and_pack
+      artifacts: true
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v.*/
