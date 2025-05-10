@@ -1,5 +1,5 @@
 {
-  "name": "streamyx-flex",
+  "name": "flex",
   "description": "Flex service for Streamyx",
   "version": "1.0.1",
   "main": "flex.js",
