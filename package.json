@@ -1,7 +1,25 @@
 {
   "name": "flex",
-  "description": "Flex service for Streamyx",
   "version": "1.0.1",
+  "homepage": "https://kinoflex.ru/",
+  "config": {
+    "title": "FLEX",
+    "icon": "https://static.rustore.ru/imgproxy/HBEKdbCtjiZK4Ej_iJNQPK1kV_zAl6yyCp7EMCrng7U/preset:app_card_icon/aHR0cHM6Ly9zdGF0aWMucnVzdG9yZS5ydS9hcGsvNTE1OTg0NTc1L2NvbnRlbnQvSUNPTi9lMGFmMTgyZi03OWM1LTQyYjctOTVlNS03ZDNkYjMxM2JhM2UucG5n.webp"
+  },
+  "keywords": [
+    "Streaming Services"
+  ],
+  "author": {
+    "name": "torislav"
+  },
+  "contributors": [
+    {
+      "name": "Vitaly Gashkov",
+      "email": "vitalygashkov@vk.com",
+      "url": "https://github.com/vitalygashkov"
+    }
+  ],
+  "license": "MIT",
   "main": "flex.js",
   "files": [
     "flex.js",
@@ -11,9 +29,6 @@
     "postpack": "tar2zip *.tgz",
     "test": "vitest"
   },
-  "keywords": [],
-  "author": "torislav",
-  "license": "ISC",
   "devDependencies": {
     "@streamyx/core": "^2.3.3",
     "tar-to-zip": "^3.0.0",
@@ -21,6 +36,6 @@
     "vitest": "^3.1.3"
   },
   "dependencies": {
-    "@streamyx/api": "^0.2.9"
+    "@streamyx/api": "^0.2.10"
   }
 }
