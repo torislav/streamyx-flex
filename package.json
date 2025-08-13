@@ -1,6 +1,6 @@
 {
   "name": "flex",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "homepage": "https://kinoflex.ru/",
   "config": {
     "title": "FLEX",
@@ -27,7 +27,8 @@
   ],
   "scripts": {
     "dev": "azt dev",
-    "build": "azt build"
+    "build": "azt build",
+    "pack": "npm run build && npm pack"
   },
   "devDependencies": {
     "@types/node": "^24.2.1",

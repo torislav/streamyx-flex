@@ -16,7 +16,7 @@ module.exports = defineExtension({
     const [type, slug] = url.split('/').slice(-2) || [];
     const eps = Azot.utils.extendEpisodes(args.episodes);
 
-    if (['serial', 'film'].includes(type)) {
+    if (['serial', 'film', 'movie'].includes(type)) {
       console.debug(`Fetching series with slug ${slug}`);
       const series = await api.fetchFilms(slug);
 
@@ -27,6 +27,7 @@ module.exports = defineExtension({
         for (const episode of season.series) {
           if (eps.items.size && !eps.has(episode.series, season.season_number)) continue;
           const source = await api.fetchPlaybackOptions(slug, episode.id);
+          const auth = await api.loadAuth();
 
           results.push({
             id: episode.id,
@@ -34,7 +35,7 @@ module.exports = defineExtension({
             seasonNumber: season.season_number,
             episodeNumber: episode.series,
             episodeTitle: episode.label.trim(),
-            source: { url: source[0].src + `?uuid=${localStorage.getItem('uuid')}` },
+            source: { url: source[0].src + `?uuid=${auth.uuid}` },
           });
         }
       }

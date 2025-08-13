@@ -3,7 +3,7 @@
 const BASE_URL = 'https://back-films.ru/api';
 const ENDPOINTS = {
   signIn: `${BASE_URL}/v5/web/auth/login/`,
-  sendCode: `${BASE_URL}/v5/mobile/auth/send-code`,
+  sendCode: `${BASE_URL}/v5/mobile/auth/send-code/`,
   user: `${BASE_URL}/v4/user`,
   films: `${BASE_URL}/v4/films`,
   episodePlaybackOptions: (slug, id) => `${BASE_URL}/v4/films/${slug}/streams/?episode=${id}`,
@@ -12,14 +12,21 @@ const ENDPOINTS = {
 const defaultHeaders = {};
 
 const loadAuth = async () => {
-  const token = localStorage.getItem('token');
-  if (token) defaultHeaders.Authorization = `JWT ${token}`;
+  const auth = localStorage.getItem('auth');
+  if (auth) {
+    const { token, uuid } = JSON.parse(auth);
+    if (token) {
+      defaultHeaders.Authorization = `JWT ${token}`;
+    }
+    return { token, uuid };
+  }
 };
 
 const saveAuth = async (auth) => {
   if (auth?.token) defaultHeaders.Authorization = `JWT ${auth.token}`;
   else delete defaultHeaders.Authorization;
-  for (const [key, value] of Object.entries(auth)) localStorage.setItem(key, value);
+
+  localStorage.setItem('auth', JSON.stringify(auth));
 };
 
 const signIn = async () => {
@@ -38,9 +45,12 @@ const signIn = async () => {
     sendCodeBody['email'] = login;
   }
 
+  await clearCookies();
   const codeResponse = await fetch(`${ENDPOINTS.sendCode}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+        'Content-Type': 'application/json',
+    },
     body: JSON.stringify(sendCodeBody),
   });
 
@@ -55,15 +65,11 @@ const signIn = async () => {
   });
 
   const authBody = {
+    ...sendCodeBody,
     code,
   };
 
-  if (isPhone) {
-    authBody['phone'] = login;
-  } else {
-    authBody['email'] = login;
-  }
-
+  await clearCookies();
   const response = await fetch(`${ENDPOINTS.signIn}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -88,6 +94,13 @@ const request = async (input, init = {}) => {
     ...init,
     headers: { ...defaultHeaders, ...(init.headers || {}) },
   });
+
+  if (response.status === 403) {
+    throw new Error(
+      'На этом аккаунте нет прав для просмотра данного контента. Проверьте наличие подписки или купленного фильма.'
+    );
+  }
+
   return response.json();
 };
 
@@ -104,5 +117,12 @@ const fetchFilms = async (slug) => {
   const url = `${ENDPOINTS.films}/${slug}`;
   return request(url);
 };
+
+const clearCookies = async () => {
+    const cookies = await cookieStore.getAll();
+    for (const cookie of cookies) {
+        await cookieStore.delete(cookie.name);
+    }
+}
 
 module.exports = { loadAuth, saveAuth, signIn, fetchUsers, fetchPlaybackOptions, fetchFilms };
