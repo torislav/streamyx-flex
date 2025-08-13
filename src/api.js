@@ -105,4 +105,4 @@ const fetchFilms = async (slug) => {
   return request(url);
 };
 
-module.exports = { createApi, loadAuth, saveAuth, signIn, fetchUsers, fetchPlaybackOptions, fetchFilms };
+module.exports = { loadAuth, saveAuth, signIn, fetchUsers, fetchPlaybackOptions, fetchFilms };
