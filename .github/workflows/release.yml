@@ -50,4 +50,4 @@ jobs:
             "${{ steps.pack_artifact.outputs.artifact_path }}" \
             "package.json" \
             "manifest.json" \
-            "REAMDE.md"
+            "README.md"
