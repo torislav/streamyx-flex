@@ -15,7 +15,7 @@ import {
   getAuthHeaders,
   type FlexFilm,
 } from './src/flex.api';
-import { parseUrlInfo, buildStreamUrl } from './src/flex.url';
+import { parseUrlInfo, buildStreamUrl, createStreamFetchFn } from './src/flex.url';
 
 type FlexContext = {
   slug: string;
@@ -131,8 +131,11 @@ export default defineExtension<FlexContext>({
       });
     }
 
+    const uuid = getAuth()?.uuid ?? auth.uuid;
     const input = new Input({
-      source: new UrlSource(buildStreamUrl(stream.src, getAuth()?.uuid ?? auth.uuid)),
+      source: new UrlSource(buildStreamUrl(stream.src, uuid), {
+        fetchFn: createStreamFetchFn(uuid),
+      }),
     });
     return { entry, input };
   },
