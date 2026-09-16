@@ -1,15 +1,11 @@
 {
   "name": "flex",
-  "version": "1.0.8",
-  "homepage": "https://kinoflex.ru/",
-  "config": {
-    "title": "FLEX",
-    "tag": "FLEX",
-    "icon": "https://static.rustore.ru/imgproxy/HBEKdbCtjiZK4Ej_iJNQPK1kV_zAl6yyCp7EMCrng7U/preset:app_card_icon/aHR0cHM6Ly9zdGF0aWMucnVzdG9yZS5ydS9hcGsvNTE1OTg0NTc1L2NvbnRlbnQvSUNPTi9lMGFmMTgyZi03OWM1LTQyYjctOTVlNS03ZDNkYjMxM2JhM2UucG5n.webp"
-  },
+  "version": "2.0.0",
   "keywords": [
     "streaming-services"
   ],
+  "homepage": "https://kinoflex.ru/",
+  "license": "MIT",
   "author": {
     "name": "torislav"
   },
@@ -20,19 +16,35 @@
       "url": "https://github.com/vitalygashkov"
     }
   ],
-  "license": "MIT",
-  "main": "dist/flex.js",
   "files": [
-    "dist"
+    "dist",
+    "icon.*",
+    "manifest.json"
   ],
+  "main": "dist/flex.cjs",
   "scripts": {
-    "dev": "azt dev",
-    "build": "azt build",
-    "pack": "npm run build && npm pack"
+    "dev": "azot dev",
+    "build": "azot build",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint . --deny-warnings",
+    "lint:fix": "oxlint . --fix",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm test",
+    "test": "vitest"
   },
   "devDependencies": {
-    "@types/node": "^24.2.1",
-    "azot": "^0.9.3",
-    "typescript": "^5.9.2"
+    "@types/node": "^25.5.0",
+    "azot": "^5.0.0-alpha.78",
+    "oxfmt": "^0.66.0",
+    "oxlint": "^1.81.0",
+    "picomatch": "^4.0.7",
+    "semver": "^7.8.5",
+    "tree-kill": "^1.2.2",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.0"
+  },
+  "engines": {
+    "azot": ">=5.0.0-alpha.78"
   }
 }

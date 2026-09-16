@@ -1,7 +1,8 @@
 /node_modules
-/logs
 /dist
 /package
+/logs
+/tmp
 *.zip
 *.tgz
 .DS_Store
