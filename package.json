@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@types/node": "^25.5.0",
-    "azot": "^5.0.0-alpha.78",
+    "azot": "^5.0.0-alpha.81",
     "oxfmt": "^0.66.0",
     "oxlint": "^1.81.0",
     "picomatch": "^4.0.7",
