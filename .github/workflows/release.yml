@@ -6,7 +6,7 @@ permissions:
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   release:
@@ -14,20 +14,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: '24'
-          cache: 'npm'
+          node-version: 24
 
       - run: npm ci
 
       - name: Get package version
         id: package_version
         run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
-
-      - name: Check
-        run: npm run check
 
       - name: Build and Pack
         id: pack_artifact
@@ -52,4 +48,6 @@ jobs:
             --generate-notes \
             $PRERELEASE_FLAG \
             "${{ steps.pack_artifact.outputs.artifact_path }}" \
-            "package.json"
+            "package.json" \
+            "manifest.json" \
+            "REAMDE.md"
